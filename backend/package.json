@@ -4,7 +4,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,8 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
-    "prisma": "^6.7.0"
+    "prisma": "^6.7.0",
+    "supertest": "^7.1.0",
+    "vitest": "^3.1.2"
   }
 }
