@@ -1,13 +1,17 @@
 import styles from './Home.module.css'; 
+import Sidebar from '../components/Sidebar'
 
 function Home() {
 
   return (
     <>
       <div className={styles.container}>
-      <h1 className={styles.title}>Bem-vindo à página inicial!</h1>
-      <p>Esse é o conteúdo da Home.</p>
-    </div>
+        <Sidebar/>
+        <div className={styles.content}>
+            <h1 className={styles.title}>Bem-vindo à página Home!</h1>
+            <p>Esse é o conteúdo de Home.</p>
+        </div>
+      </div>
     </>
   )
 }

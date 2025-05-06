@@ -1,9 +1,8 @@
 .container {
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-  
-  .title {
-    color: #333;
-    font-size: 24px;
-  }
+  display: flex;
+  flex-direction: row;
+}
+
+.content{
+  margin-left: 350px;
+}

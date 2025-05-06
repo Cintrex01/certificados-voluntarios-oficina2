@@ -1,13 +1,17 @@
-import styles from './Emissao.module.css'; 
+import styles from './Emissao.module.css';
+import Sidebar from '../components/Sidebar' 
 
 function Emissao() {
 
   return (
     <>
         <div className={styles.container}>
-            <h1 className={styles.title}>Bem-vindo à página de Emissao!</h1>
-            <p>Esse é o conteúdo de Emissao.</p>
+        <Sidebar/>
+        <div className={styles.content}>
+            <h1 className={styles.title}>Bem-vindo à página de Emissão!</h1>
+            <p>Esse é o conteúdo de Emissão.</p>
         </div>
+      </div>
     </>
   )
 }

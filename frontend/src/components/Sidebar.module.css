@@ -1,0 +1,90 @@
+.container{
+    background-color: #E1EBF2;
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    height: 100vh;
+    position: fixed;
+}
+
+.box1{
+    height: 33%;
+    padding: 20px;
+}
+
+.title{
+    border-left: 5px solid #1E90FF;
+}
+
+.title h1{
+    margin-left: 20px;
+}
+
+.box2{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 33%;
+    width:  100%;
+}
+.box2 button{
+    border: none;
+    background: none;
+    font-size: 20px;
+    font-weight: 500;
+    width: 250px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.box2 button:hover{
+    cursor: pointer;
+}
+
+.box2 button span{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon{
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    justify-content: center;
+}
+
+.option{
+    font-size: 1.4rem;
+}
+
+.box3{
+  position: relative; 
+  width: 100%;
+  height: 34%;
+}
+
+.imagem{
+    width: 200px;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.active button {
+    background-color: #F79335;
+}
+
+.active button:hover{
+    cursor: default;
+}
+
+.active:hover{
+    cursor: default;
+}
