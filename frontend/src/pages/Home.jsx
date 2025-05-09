@@ -9,7 +9,7 @@ function Home() {
         <Sidebar/>
         <div className={styles.content}>
             <h1 className={styles.title}>Bem-vindo à página Home!</h1>
-            <p>Esse é o conteúdo de Home.</p>
+            <p>Esse é o conteúdo de Homeeeee.</p>
         </div>
       </div>
     </>
