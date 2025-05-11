@@ -1,0 +1,50 @@
+@page {
+  size: A4;
+  margin: 2cm;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: white;
+  font-family: Arial, sans-serif;
+}
+
+.page {
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 2cm;
+  box-sizing: border-box;
+}
+
+.page-break {
+  page-break-before: always;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+}
+
+.headerImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.headerImage img {
+  height: auto;
+  width: 90px;
+}
+
+.headerText {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  line-height: 6px;
+}
