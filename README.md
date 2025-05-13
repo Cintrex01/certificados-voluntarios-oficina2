@@ -141,6 +141,10 @@ git clone https://github.com/Cintrex01/certificados-voluntarios-oficina2.git
 - Na pasta backend, crie um arquivo .env com o seguinte conteúdo:
 - DATABASE_URL=coloque_aqui_sua_url_do_mongodb
 
+### Gerar Prisma Client no /backend
+
+- npx prisma generate
+
 ### Executar testes no /backend:
 
 - cd backend
