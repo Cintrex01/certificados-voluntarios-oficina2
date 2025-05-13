@@ -28,3 +28,20 @@ model Aluno {
   telefone          String
   email             String   @unique
 }
+
+model Termo {
+  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
+  instituicao               String
+  campus                    String
+  tituloDaAcao              String
+  modalidade                String
+  dataDeInicio              DateTime
+  dataDeTermino             DateTime
+  nomeCoordenacao           String
+  cpfCoordenacao            String
+  departamento              String
+  telefoneCoordenacao       String
+  emailCoordenacao          String
+  atividadesParaDesenvolver String[]
+  condicoesGerais           Json
+}
