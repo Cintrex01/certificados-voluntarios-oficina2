@@ -333,3 +333,96 @@ body {
   border-right: 1px solid black;
   border-bottom: 1px solid black;
 }
+
+.pagina2 {
+  display: flex;
+  flex-direction: column;
+  height: 100vb;
+  justify-content: space-between;
+}
+
+.condicoesGerais {
+  font-size: 14px;
+  text-align: justify;
+}
+
+.condicoesGerais span {
+  padding-left: 20px;
+}
+
+.locDataRow {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  padding-left: 10px;
+  margin-top: 20px;
+}
+
+.locBox {
+  border-right: 1px solid black;
+  width: 65%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dataBox {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+}
+
+.aceiteConcordanciaTitle h3 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.aceiteConcordanciaTitle p {
+  font-style: italic;
+  font-size: 14px;
+}
+
+.voluntarioRow {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+}
+
+.voluntarioBox {
+  width: 28%;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-right: 1px solid black;
+}
+
+.coordenacaoRow {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.coordenacaoBox {
+  width: 28%;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-right: 1px solid black;
+}
+
+.direcRow {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.direcBox {
+  width: 28%;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-right: 1px solid black;
+}
