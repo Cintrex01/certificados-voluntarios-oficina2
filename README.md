@@ -1,6 +1,6 @@
 # certificados-voluntarios-oficina2
 
-Sistema para cadastro e geração de certificados de alunos voluntários do projeto de extensão ELLP – Ensino Lúdico de Lógica e Programação, desenvolvido na disciplina Oficina de Integração 2 com foco em atividades extensionistas.
+Sistema para cadastro e geração de termos de adesão de alunos voluntários do projeto de extensão ELLP – Ensino Lúdico de Lógica e Programação, desenvolvido na disciplina Oficina de Integração 2 com foco em atividades extensionistas.
 
 ## Ferramentas e Tecnologias
 
@@ -17,22 +17,22 @@ Sistema para cadastro e geração de certificados de alunos voluntários do proj
 - MongoDB
 - Puppeteer
 
-## Testes
+### Testes
 
 - Vitest
 
-## Versionamento de Código
+### Versionamento de Código
 
 - Git
 - GitHub
 
-## Gerenciamento de Projeto
+### Gerenciamento de Projeto
 
 - Trello
 
-**Atributos**
+## Atributos
 
-- Alunos
+**Alunos**
 - Id
 - Nome
 - CPF
@@ -80,18 +80,17 @@ Sistema para cadastro e geração de certificados de alunos voluntários do proj
 - O sistema deve permitir a edição dos dados de um termo de adesão.
 - O sistema deve permitir a exclusão de termos de adesão.
 
-**_Associação de Termos de Adesão a Alunos_**
+**Associação de Termos de Adesão a Alunos**
 
 - O sistema deve permitir selecionar um termo de adesão existente.
 - O sistema deve permitir selecionar um ou mais alunos para associar ao termo de adesão.
 - O sistema deve permitir gerar termos de adesão personalizados (individualmente ou em lote) para os alunos selecionados.
 
-## Geração e Download de Termos de Adesão
+**Geração e Download de Termos de Adesão**
 
 O sistema deve gerar termos de adesão em formato PDF com texto padronizado contendo os dados do aluno e da ação, incluindo:
 
-**_Nome do aluno_**
-
+- Nome
 - CPF
 - Curso e RA
 - Título da ação
@@ -99,7 +98,7 @@ O sistema deve gerar termos de adesão em formato PDF com texto padronizado cont
 - Período da atividade
 - Informações da coordenação
 
-## Atividades e condições gerais
+**Atividades e condições gerais**
 
 O sistema deve permitir o download dos termos de adesão gerados, individualmente ou em lote (formato ZIP).
 
@@ -121,11 +120,11 @@ Estrutura de Pastas
 
 ## Como instalar e executar o projeto
 
-## Clonar repositório
+### Clonar repositório:
 
 git clone https://github.com/Cintrex01/certificados-voluntarios-oficina2.git
 
-## Instalar dependências
+### Instalar dependências:
 
 **_/frontend:_**
 
@@ -137,17 +136,21 @@ git clone https://github.com/Cintrex01/certificados-voluntarios-oficina2.git
 - cd ../backend
 - npm install
 
-**_Configurar variáveis de ambiente:_**
+### Configurar variáveis de ambiente:
 
 - Na pasta backend, crie um arquivo .env com o seguinte conteúdo:
 - DATABASE_URL=coloque_aqui_sua_url_do_mongodb
 
-**_Executar testes no /backend:_**
+### Gerar Prisma Client no /backend
+
+- npx prisma generate
+
+### Executar testes no /backend:
 
 - cd backend
 - npx vitest run
 
-**_Iniciar os servidores_**
+### Iniciar os servidores:
 
 **_/frontend:_**
 

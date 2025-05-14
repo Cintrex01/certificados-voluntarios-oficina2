@@ -1,0 +1,428 @@
+@page {
+  size: A4;
+  margin: 2cm;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: white;
+  font-family: Arial, sans-serif;
+}
+
+.page {
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 2cm;
+  box-sizing: border-box;
+}
+
+.page-break {
+  page-break-before: always;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+}
+
+.headerImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.headerImage img {
+  height: auto;
+  width: 90px;
+}
+
+.headerText {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  line-height: 6px;
+}
+
+.docTitle {
+  text-decoration: underline;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.dadosInstituicao {
+  margin-top: 30px;
+}
+
+.dadosInstituicaoTitulo {
+  padding-left: 10px;
+}
+
+.instituicao {
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  padding-left: 10px;
+}
+
+.campus {
+  border: 1px solid black;
+  padding-left: 10px;
+}
+
+.dadosAcao {
+  margin-top: 20px;
+}
+
+.dadosAcaoTitulo {
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+.dadosAcaoInfo {
+  border: 1px solid black;
+  padding-left: 10px;
+}
+
+.tituloAcao {
+  font-weight: bold;
+}
+
+.modalidade {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+}
+
+.modalidadeTitulo {
+  padding-left: 10px;
+}
+
+.modalidadeOpcoes {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.linhaVigencia {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.tituloVigencia {
+  border-right: 1px solid black;
+  padding-right: 10px;
+}
+
+.inicioVigencia {
+  padding-left: 10px;
+  border-right: 1px solid black;
+  padding-right: 50px;
+}
+
+.terminoVigencia {
+  padding-left: 10px;
+}
+
+.dadosCoordenacao {
+  margin-top: 20px;
+}
+
+.dadosCoordenacaoTitulo {
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+.coordenacaoNomeRow {
+  border: 1px solid black;
+  padding-left: 10px;
+}
+
+.coordenacaoNome {
+  font-weight: bold;
+}
+
+.cpfDepRow {
+  padding-left: 10px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+}
+
+.cpfBox {
+  border-right: 1px solid black;
+  padding-right: 60px;
+}
+
+.depBox {
+  padding-left: 10px;
+}
+
+.departamento {
+  font-weight: bold;
+}
+
+.foneEmailRow {
+  padding-left: 10px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+}
+
+.foneBox {
+  border-right: 1px solid black;
+  padding-right: 60px;
+}
+
+.emailBox {
+  padding-left: 10px;
+}
+
+.dadosVoluntario {
+  margin-top: 20px;
+}
+
+.dadosVoluntarioTitulo {
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+.nomeNascRow {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  padding-left: 10px;
+}
+
+.nomeBox {
+  border-right: 1px solid black;
+  width: 60%;
+}
+
+.nascBox {
+  width: 40%;
+  padding-left: 10px;
+}
+
+.cpfNacioRow {
+  display: flex;
+  flex-direction: row;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-left: 10px;
+}
+
+.cpfVolBox {
+  border-right: 1px solid black;
+  width: 50%;
+}
+
+.nacioBox {
+  padding-left: 10px;
+}
+
+.eEstudanteRow {
+  padding-left: 10px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.eEstudanteOpcao {
+  padding-left: 20px;
+}
+
+.curPerRaRow {
+  display: flex;
+  flex-direction: row;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-left: 10px;
+}
+
+.curBox {
+  border-right: 1px solid black;
+  width: 60%;
+}
+
+.perBox {
+  width: 20%;
+  border-right: 1px solid black;
+  padding-left: 10px;
+}
+
+.raBox {
+  width: 20%;
+  padding-left: 10px;
+}
+
+.enderecoRow {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-left: 10px;
+}
+
+.cidEstRow {
+  display: flex;
+  flex-direction: row;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-left: 10px;
+}
+
+.cidBox {
+  border-right: 1px solid black;
+  width: 70%;
+}
+
+.estBox {
+  padding-left: 10px;
+}
+
+.foneEmailVolRow {
+  padding-left: 10px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+}
+
+.foneBoxVol {
+  border-right: 1px solid black;
+  width: 35%;
+}
+
+.emailBoxVol {
+  padding-left: 10px;
+}
+
+.sintese {
+  margin-top: 20px;
+}
+
+.sinteseTitulo {
+  border-bottom: 1px solid black;
+  padding-left: 10px;
+}
+
+.sinteseRow {
+  padding-left: 10px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.pagina2 {
+  display: flex;
+  flex-direction: column;
+  height: 100vb;
+  justify-content: space-between;
+}
+
+.condicoesGerais {
+  font-size: 14px;
+  text-align: justify;
+}
+
+.condicoesGerais span {
+  padding-left: 20px;
+}
+
+.locDataRow {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  padding-left: 10px;
+  margin-top: 20px;
+}
+
+.locBox {
+  border-right: 1px solid black;
+  width: 65%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dataBox {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+}
+
+.aceiteConcordanciaTitle h3 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.aceiteConcordanciaTitle p {
+  font-style: italic;
+  font-size: 14px;
+}
+
+.voluntarioRow {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+}
+
+.voluntarioBox {
+  width: 28%;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-right: 1px solid black;
+}
+
+.coordenacaoRow {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.coordenacaoBox {
+  width: 28%;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-right: 1px solid black;
+}
+
+.direcRow {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.direcBox {
+  width: 28%;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-right: 1px solid black;
+}
