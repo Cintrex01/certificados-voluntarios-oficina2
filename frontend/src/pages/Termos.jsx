@@ -1,19 +1,18 @@
-import styles from './Termos.module.css';
-import Sidebar from '../components/Sidebar' 
+import styles from "./Termos.module.css";
+import Sidebar from "../components/Sidebar";
+import TermoList from "../components/TermoList";
 
 function Termos() {
-
   return (
     <>
       <div className={styles.container}>
-        <Sidebar/>
+        <Sidebar />
         <div className={styles.content}>
-            <h1 className={styles.title}>Bem-vindo à página de Termos!</h1>
-            <p>Esse é o conteúdo de Termos.</p>
+          <TermoList />
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Termos
+export default Termos;

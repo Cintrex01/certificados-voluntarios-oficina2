@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createAluno, updateAluno } from "../services/alunoService";
-import styles from "./AlunoForm.module.css";
+import styles from "./Form.module.css";
 
 function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
   const [form, setForm] = useState({

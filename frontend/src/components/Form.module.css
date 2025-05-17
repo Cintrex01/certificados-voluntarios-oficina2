@@ -1,0 +1,123 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.inputGroup {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.inputGroup input,
+.inputGroup select,
+.textarea {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.textarea {
+  min-height: 60px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.inputWithButton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.inputWithButton textarea,
+.inputWithButton input {
+  width: 100%;
+}
+
+.inputWithButton button {
+  align-self: flex-start;
+  padding: 0.3rem 0.7rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.inputWithButton button:hover {
+  background-color: #c0392b;
+}
+
+.buttonSubGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.3rem;
+  margin-bottom: 20px;
+}
+
+.buttonSubGroup button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.buttonSubGroup button:hover {
+  background-color: #2980b9;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.buttonGroup button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.buttonGroup button[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+}
+
+.buttonGroup button[type="submit"]:hover {
+  background-color: #409642;
+}
+
+.buttonGroup button[type="button"] {
+  background-color: #6c757d;
+  color: white;
+}
+
+.buttonGroup button[type="button"]:hover {
+  background-color: #575f66;
+}
