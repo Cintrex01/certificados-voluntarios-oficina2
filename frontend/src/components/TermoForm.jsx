@@ -161,13 +161,18 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
         </div>
         <div className={styles.inputGroup}>
           <label>Modalidade</label>
-          <input
-            type="text"
+          <select
             name="modalidade"
             value={form.modalidade}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Selecione a modalidade</option>
+            <option value="programa">Programa</option>
+            <option value="projeto">Projeto</option>
+            <option value="evento">Evento</option>
+            <option value="curso">Curso</option>
+          </select>
         </div>
       </div>
 

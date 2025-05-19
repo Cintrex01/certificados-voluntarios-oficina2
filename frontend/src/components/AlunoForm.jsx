@@ -143,13 +143,24 @@ function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
         </div>
         <div className={styles.inputGroup}>
           <label>Período</label>
-          <input
+          <select
             name="periodo"
-            type="number"
             value={form.periodo}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Selecione o período</option>
+            <option value="1">1º período</option>
+            <option value="2">2º período</option>
+            <option value="3">3º período</option>
+            <option value="4">4º período</option>
+            <option value="5">5º período</option>
+            <option value="6">6º período</option>
+            <option value="7">7º período</option>
+            <option value="8">8º período</option>
+            <option value="9">9º período</option>
+            <option value="10">10º período</option>
+          </select>
         </div>
         <div className={styles.inputGroup}>
           <label>RA</label>
@@ -179,12 +190,41 @@ function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
         </div>
         <div className={styles.inputGroup}>
           <label>Estado</label>
-          <input
+          <select
             name="estado"
             value={form.estado}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Selecione o estado</option>
+            <option value="AC">Acre</option>
+            <option value="AL">Alagoas</option>
+            <option value="AP">Amapá</option>
+            <option value="AM">Amazonas</option>
+            <option value="BA">Bahia</option>
+            <option value="CE">Ceará</option>
+            <option value="DF">Distrito Federal</option>
+            <option value="ES">Espírito Santo</option>
+            <option value="GO">Goiás</option>
+            <option value="MA">Maranhão</option>
+            <option value="MT">Mato Grosso</option>
+            <option value="MS">Mato Grosso do Sul</option>
+            <option value="MG">Minas Gerais</option>
+            <option value="PA">Pará</option>
+            <option value="PB">Paraíba</option>
+            <option value="PR">Paraná</option>
+            <option value="PE">Pernambuco</option>
+            <option value="PI">Piauí</option>
+            <option value="RJ">Rio de Janeiro</option>
+            <option value="RN">Rio Grande do Norte</option>
+            <option value="RS">Rio Grande do Sul</option>
+            <option value="RO">Rondônia</option>
+            <option value="RR">Roraima</option>
+            <option value="SC">Santa Catarina</option>
+            <option value="SP">São Paulo</option>
+            <option value="SE">Sergipe</option>
+            <option value="TO">Tocantins</option>
+          </select>
         </div>
       </div>
 
