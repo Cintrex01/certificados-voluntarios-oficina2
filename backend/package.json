@@ -12,8 +12,10 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.7.0",
+    "archiver": "^7.0.1",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "puppeteer": "^24.9.0"
   },
   "devDependencies": {
     "prisma": "^6.7.0",
