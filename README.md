@@ -148,7 +148,7 @@ git clone https://github.com/Cintrex01/certificados-voluntarios-oficina2.git
 ### Executar testes no /backend:
 
 - cd backend
-- npx vitest run
+- npx vitest run --reporter verbose
 
 ### Iniciar os servidores:
 
