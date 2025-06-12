@@ -9,6 +9,22 @@ const prisma = new PrismaClient();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Sistema de template simples
+class SimpleTemplateEngine {
+  static render(template, data) {
+    return template.replace(/\{\{([^}]+)\}\}/g, (match, key) => {
+      const keys = key.trim().split(".");
+      let value = data;
+
+      for (const k of keys) {
+        value = value?.[k];
+      }
+
+      return value !== undefined ? value : match;
+    });
+  }
+}
+
 export const generatePDFs = async (req, res) => {
   try {
     const { termoId, alunoIds } = req.body;
@@ -59,14 +75,14 @@ export const generatePDFs = async (req, res) => {
     // Criar o arquivo ZIP
     const output = fs.createWriteStream(zipPath);
     const archive = archiver("zip", {
-      zlib: { level: 9 }, // Nível de compressão
+      zlib: { level: 9 },
     });
 
     archive.pipe(output);
 
     // Iniciar o navegador Puppeteer
     const browser = await puppeteer.launch({
-      headless: "new", // Use o novo modo headless
+      headless: "new",
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
@@ -77,7 +93,7 @@ export const generatePDFs = async (req, res) => {
     );
     const templateHtml = fs.readFileSync(templatePath, "utf8");
 
-    // Copiar as imagens e CSS para o diretório temporário para acesso via puppeteer
+    // Copiar as imagens e CSS para o diretório temporário
     const imagesDir = path.join(__dirname, "../../templates/pdf/images");
     const cssFile = path.join(__dirname, "../../templates/pdf/style.css");
 
@@ -100,200 +116,11 @@ export const generatePDFs = async (req, res) => {
 
     // Gerar PDF para cada aluno
     for (const aluno of alunos) {
-      // Criar HTML personalizado para este aluno
-      let html = templateHtml;
+      // Preparar dados para o template
+      const templateData = prepareTemplateData(termo, aluno);
 
-      // Substituir dados do termo
-      html = html.replace(
-        /<span>Instituição: <\/span><span>Universidade Tecnológica Federal do Paraná - UTFPR<\/span>/g,
-        `<span>Instituição: </span><span>${termo.instituicao}</span>`
-      );
-
-      html = html.replace(
-        /<span>Câmpus: <\/span><span>Cornélio Procópio<\/span>/g,
-        `<span>Câmpus: </span><span>${termo.campus}</span>`
-      );
-
-      html = html.replace(
-        /<span class="tituloAcao">ELLP \(Ensino Lúdico de Lógica e Programação\)<\/span>/g,
-        `<span class="tituloAcao">${termo.tituloDaAcao}</span>`
-      );
-
-      // Atualizar opção de modalidade
-      const modalidades = ["programa", "projeto", "evento", "curso"];
-      modalidades.forEach((modalidade) => {
-        const isSelected = modalidade === termo.modalidade.toLowerCase();
-        const replacement = isSelected ? "(X)" : "( )";
-        const regex = new RegExp(`\\( \\) ${modalidade}`, "gi");
-        html = html.replace(regex, `${replacement} ${modalidade}`);
-      });
-
-      // Formatar datas
-      const dataInicio = new Date(termo.dataDeInicio);
-      const dataTermino = new Date(termo.dataDeTermino);
-
-      html = html.replace(
-        /<span>15\/08\/2022<\/span>/g,
-        `<span>${dataInicio.toLocaleDateString("pt-BR")}</span>`
-      );
-
-      html = html.replace(
-        /<span>11\/08\/2023<\/span>/g,
-        `<span>${dataTermino.toLocaleDateString("pt-BR")}</span>`
-      );
-
-      // Coordenação
-      html = html.replace(
-        /<span class="coordenacaoNome">Roberto Carlos Fernandes da Silva<\/span>/g,
-        `<span class="coordenacaoNome">${termo.nomeCoordenacao}</span>`
-      );
-
-      html = html.replace(
-        /<span class="cpf">000\.000\.000-00<\/span>/g,
-        `<span class="cpf">${formatCPF(termo.cpfCoordenacao)}</span>`
-      );
-
-      html = html.replace(
-        /<span class="departamento">DACOM<\/span>/g,
-        `<span class="departamento">${termo.departamento}</span>`
-      );
-
-      html = html.replace(
-        /<span>\( 43 \) 990000000<\/span>/g,
-        `<span>${formatTelefone(termo.telefoneCoordenacao)}</span>`
-      );
-
-      html = html.replace(
-        /<span>roberto@email\.com<\/span>/g,
-        `<span>${termo.emailCoordenacao}</span>`
-      );
-
-      // Dados do aluno
-      html = html.replace(
-        /<span>Fulano Ribeiro Santos Almeida<\/span>/g,
-        `<span>${aluno.nome}</span>`
-      );
-
-      const dataNascimento = new Date(aluno.dataDeNascimento);
-      html = html.replace(
-        /<span>09\/03\/2000<\/span>/g,
-        `<span>${dataNascimento.toLocaleDateString("pt-BR")}</span>`
-      );
-
-      html = html.replace(
-        /<span>000\.000\.000-00<\/span>/g,
-        `<span>${formatCPF(aluno.cpf)}</span>`
-      );
-
-      // É estudante da UTFPR
-      const isEstudante = aluno.estudanteDaUtfpr;
-      html = html.replace(
-        /<span class="eEstudanteOpcao">\(X\) Sim <\/span>/g,
-        `<span class="eEstudanteOpcao">${
-          isEstudante ? "(X)" : "( )"
-        } Sim </span>`
-      );
-
-      html = html.replace(
-        /<span class="eEstudanteOpcao">\( \) Não <\/span>/g,
-        `<span class="eEstudanteOpcao">${
-          !isEstudante ? "(X)" : "( )"
-        } Não </span>`
-      );
-
-      // Curso, período e RA
-      html = html.replace(
-        /<span>Engenharia de Controle e automação<\/span>/g,
-        `<span>${aluno.curso}</span>`
-      );
-
-      html = html.replace(/<span>6<\/span>/g, `<span>${aluno.periodo}</span>`);
-
-      html = html.replace(/<span>0000000<\/span>/g, `<span>${aluno.ra}</span>`);
-
-      // Endereço, cidade e estado
-      html = html.replace(
-        /<span>Rua Ordem e Progresso, 1230<\/span>/g,
-        `<span>${aluno.endereco}</span>`
-      );
-
-      html = html.replace(
-        /<span>Cornélio Procópio<\/span>/g,
-        `<span>${aluno.cidade}</span>`
-      );
-
-      html = html.replace(/<span>PR<\/span>/g, `<span>${aluno.estado}</span>`);
-
-      // Telefone e email
-      html = html.replace(
-        /<span>\(43\) 900000000<\/span>/g,
-        `<span>${formatTelefone(aluno.telefone)}</span>`
-      );
-
-      html = html.replace(
-        /<span>fulano@email\.com<\/span>/g,
-        `<span>${aluno.email}</span>`
-      );
-
-      // Atividades a serem desenvolvidas
-      const atividadesHTML = termo.atividadesParaDesenvolver
-        .map(
-          (atividade, index) =>
-            `<div class="sinteseRow"><span>${
-              index + 1
-            } </span><span>${atividade}</span></div>`
-        )
-        .join("");
-
-      const sinteseRegex = /<div class="sinteseRow">[\s\S]*?<\/div>/g;
-      const allSinteseRows = html.match(sinteseRegex);
-
-      if (allSinteseRows) {
-        const originalSinteseSection = allSinteseRows.join("");
-        const newSinteseSection =
-          atividadesHTML +
-          Array(Math.max(0, 11 - termo.atividadesParaDesenvolver.length))
-            .fill(
-              '<div class="sinteseRow"><span>&nbsp;</span><span>&nbsp;</span></div>'
-            )
-            .join("");
-
-        html = html.replace(originalSinteseSection, newSinteseSection);
-      }
-
-      // Condições gerais
-      let condicoesGeraisHTML = "";
-      termo.condicoesGerais.forEach((condicao, index) => {
-        condicoesGeraisHTML += `<p>${condicao.titulo}`;
-
-        if (condicao.subtopicos && condicao.subtopicos.length > 0) {
-          condicao.subtopicos.forEach((subtopico) => {
-            condicoesGeraisHTML += `<br /><span>${subtopico}</span>`;
-          });
-        }
-
-        condicoesGeraisHTML += `</p>`;
-      });
-
-      const condicoesGeraisRegex =
-        /<div class="condicoesGerais">[\s\S]*?<\/div>/;
-      const condicoesGeraisMatch = html.match(condicoesGeraisRegex);
-
-      if (condicoesGeraisMatch) {
-        const newCondicoesGerais = `<div class="condicoesGerais">
-          <h3 class="docTitle">Condições Gerais</h3>
-          ${condicoesGeraisHTML}
-        </div>`;
-
-        html = html.replace(condicoesGeraisMatch[0], newCondicoesGerais);
-      }
-
-      // Data atual
-      const dataAtual = new Date();
-      html = html.replace(
-        /<span>22\/08\/2022<\/span>/g,
-        `<span>${dataAtual.toLocaleDateString("pt-BR")}</span>`
-      );
+      // Renderizar o template
+      const html = SimpleTemplateEngine.render(templateHtml, templateData);
 
       // Salvar o HTML modificado em um arquivo temporário
       const tempHtmlPath = path.join(tempDir, `termo_${aluno.id}.html`);
@@ -378,20 +205,113 @@ export const generatePDFs = async (req, res) => {
   }
 };
 
+// Função para preparar os dados do template
+function prepareTemplateData(termo, aluno) {
+  // Processar modalidades
+  const modalidades = ["programa", "projeto", "evento", "curso"];
+  const modalidade = {};
+  modalidades.forEach((mod) => {
+    modalidade[mod] = mod === termo.modalidade.toLowerCase() ? "(X)" : "( )";
+  });
+
+  // Processar se é estudante
+  const estudante = {
+    sim: aluno.estudanteDaUtfpr ? "(X)" : "( )",
+    nao: !aluno.estudanteDaUtfpr ? "(X)" : "( )",
+  };
+
+  // Processar atividades
+  const atividades = generateAtividadesHTML(termo.atividadesParaDesenvolver);
+
+  // Processar condições gerais
+  const condicoesGerais = generateCondicoesGeraisHTML(termo.condicoesGerais);
+
+  return {
+    termo: {
+      instituicao: termo.instituicao,
+      campus: termo.campus,
+      tituloDaAcao: termo.tituloDaAcao,
+      dataDeInicio: formatDate(termo.dataDeInicio),
+      dataDeTermino: formatDate(termo.dataDeTermino),
+      nomeCoordenacao: termo.nomeCoordenacao,
+      cpfCoordenacao: formatCPF(termo.cpfCoordenacao),
+      departamento: termo.departamento,
+      telefoneCoordenacao: formatTelefone(termo.telefoneCoordenacao),
+      emailCoordenacao: termo.emailCoordenacao,
+    },
+    aluno: {
+      nome: aluno.nome,
+      dataDeNascimento: formatDate(aluno.dataDeNascimento),
+      cpf: formatCPF(aluno.cpf),
+      curso: aluno.curso,
+      periodo: aluno.periodo,
+      ra: aluno.ra,
+      endereco: aluno.endereco,
+      cidade: aluno.cidade,
+      estado: aluno.estado,
+      telefone: formatTelefone(aluno.telefone),
+      email: aluno.email,
+    },
+    modalidade,
+    estudante,
+    atividades,
+    condicoesGerais,
+    dataAtual: formatDate(new Date()),
+  };
+}
+
+// Função para gerar HTML das atividades
+function generateAtividadesHTML(atividades) {
+  let html = "";
+
+  // Adicionar atividades existentes
+  atividades.forEach((atividade, index) => {
+    html += `<div class="sinteseRow">
+      <span>${index + 1} </span>
+      <span>${atividade}</span>
+    </div>`;
+  });
+
+  // Adicionar linhas vazias para completar o layout (máximo 11 linhas)
+  const linhasVazias = Math.max(0, 11 - atividades.length);
+  for (let i = 0; i < linhasVazias; i++) {
+    html += `<div class="sinteseRow">
+      <span>&nbsp;</span>
+      <span>&nbsp;</span>
+    </div>`;
+  }
+
+  return html;
+}
+
+// Função para gerar HTML das condições gerais
+function generateCondicoesGeraisHTML(condicoes) {
+  let html = "";
+
+  condicoes.forEach((condicao) => {
+    html += `<p>${condicao.titulo}`;
+
+    if (condicao.subtopicos && condicao.subtopicos.length > 0) {
+      condicao.subtopicos.forEach((subtopico) => {
+        html += `<br /><span>${subtopico}</span>`;
+      });
+    }
+
+    html += "</p>";
+  });
+
+  return html;
+}
+
 // Funções auxiliares
 function formatCPF(cpf) {
-  // Remove caracteres não numéricos
   cpf = cpf.replace(/\D/g, "");
-
-  // Formatação do CPF: XXX.XXX.XXX-XX
   return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
 }
 
 function formatTelefone(telefone) {
-  // Remove caracteres não numéricos
   telefone = telefone.replace(/\D/g, "");
 
-  // Formatação do telefone: (XX) XXXXXXXXX
   if (telefone.length === 11) {
     return telefone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
   } else if (telefone.length === 10) {
@@ -401,8 +321,11 @@ function formatTelefone(telefone) {
   return telefone;
 }
 
+function formatDate(date) {
+  return new Date(date).toLocaleDateString("pt-BR");
+}
+
 function sanitizeFilename(filename) {
-  // Substitui caracteres inválidos para nomes de arquivo
   return filename
     .replace(/[áàãâä]/gi, "a")
     .replace(/[éèêë]/gi, "e")
