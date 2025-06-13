@@ -19,6 +19,8 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
     condicoesGerais: [],
   });
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (termoEdit) {
       setForm({
@@ -32,6 +34,28 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+  };
+
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const isValidCPF = (cpf) => {
+    cpf = cpf.replace(/[^\d]+/g, "");
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+    let sum = 0;
+    for (let i = 0; i < 9; i++) sum += parseInt(cpf[i]) * (10 - i);
+    let rest = (sum * 10) % 11;
+    if (rest === 10 || rest === 11) rest = 0;
+    if (rest !== parseInt(cpf[9])) return false;
+
+    sum = 0;
+    for (let i = 0; i < 10; i++) sum += parseInt(cpf[i]) * (11 - i);
+    rest = (sum * 10) % 11;
+    if (rest === 10 || rest === 11) rest = 0;
+    return rest === parseInt(cpf[10]);
   };
 
   const handleArrayChange = (index, value) => {
@@ -96,6 +120,50 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const newErrors = {};
+
+    const requiredFields = [
+      "instituicao",
+      "campus",
+      "tituloDaAcao",
+      "modalidade",
+      "dataDeInicio",
+      "dataDeTermino",
+      "nomeCoordenacao",
+      "cpfCoordenacao",
+      "departamento",
+      "telefoneCoordenacao",
+      "emailCoordenacao",
+    ];
+
+    requiredFields.forEach((field) => {
+      if (
+        !form[field] ||
+        form[field] === "" ||
+        form[field] === null ||
+        form[field] === undefined
+      ) {
+        newErrors[field] = "Campo obrigatório.";
+      }
+    });
+
+    // Validação específica do email
+    if (form.emailCoordenacao && !isValidEmail(form.emailCoordenacao)) {
+      newErrors.emailCoordenacao = "E-mail inválido.";
+    }
+
+    // Validação específica do CPF
+    if (form.cpfCoordenacao && !isValidCPF(form.cpfCoordenacao)) {
+      newErrors.cpfCoordenacao = "CPF inválido.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+
     const termoData = {
       ...form,
       dataDeInicio: new Date(form.dataDeInicio).toISOString(),
@@ -114,6 +182,21 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
 
       await action;
 
+      setForm({
+        instituicao: "",
+        campus: "",
+        tituloDaAcao: "",
+        modalidade: "",
+        dataDeInicio: "",
+        dataDeTermino: "",
+        nomeCoordenacao: "",
+        cpfCoordenacao: "",
+        departamento: "",
+        telefoneCoordenacao: "",
+        emailCoordenacao: "",
+        atividadesParaDesenvolver: [""],
+        condicoesGerais: [],
+      });
       setTermoEdit(null);
       onSuccess();
     } catch (error) {
@@ -133,8 +216,10 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="instituicao"
             value={form.instituicao}
             onChange={handleChange}
-            required
           />
+          {errors.instituicao && (
+            <small className={styles.errorText}>{errors.instituicao}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Campus</label>
@@ -143,8 +228,10 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="campus"
             value={form.campus}
             onChange={handleChange}
-            required
           />
+          {errors.campus && (
+            <small className={styles.errorText}>{errors.campus}</small>
+          )}
         </div>
       </div>
 
@@ -156,8 +243,10 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="tituloDaAcao"
             value={form.tituloDaAcao}
             onChange={handleChange}
-            required
           />
+          {errors.tituloDaAcao && (
+            <small className={styles.errorText}>{errors.tituloDaAcao}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Modalidade</label>
@@ -165,7 +254,6 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="modalidade"
             value={form.modalidade}
             onChange={handleChange}
-            required
           >
             <option value="">Selecione a modalidade</option>
             <option value="programa">Programa</option>
@@ -173,6 +261,9 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             <option value="evento">Evento</option>
             <option value="curso">Curso</option>
           </select>
+          {errors.modalidade && (
+            <small className={styles.errorText}>{errors.modalidade}</small>
+          )}
         </div>
       </div>
 
@@ -184,8 +275,10 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="dataDeInicio"
             value={form.dataDeInicio}
             onChange={handleChange}
-            required
           />
+          {errors.dataDeInicio && (
+            <small className={styles.errorText}>{errors.dataDeInicio}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Data de Término</label>
@@ -194,8 +287,10 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="dataDeTermino"
             value={form.dataDeTermino}
             onChange={handleChange}
-            required
           />
+          {errors.dataDeTermino && (
+            <small className={styles.errorText}>{errors.dataDeTermino}</small>
+          )}
         </div>
       </div>
 
@@ -207,8 +302,10 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="nomeCoordenacao"
             value={form.nomeCoordenacao}
             onChange={handleChange}
-            required
           />
+          {errors.nomeCoordenacao && (
+            <small className={styles.errorText}>{errors.nomeCoordenacao}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>CPF da Coordenação</label>
@@ -217,8 +314,10 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="cpfCoordenacao"
             value={form.cpfCoordenacao}
             onChange={handleChange}
-            required
           />
+          {errors.cpfCoordenacao && (
+            <small className={styles.errorText}>{errors.cpfCoordenacao}</small>
+          )}
         </div>
       </div>
 
@@ -230,8 +329,10 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="departamento"
             value={form.departamento}
             onChange={handleChange}
-            required
           />
+          {errors.departamento && (
+            <small className={styles.errorText}>{errors.departamento}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Telefone da Coordenação</label>
@@ -240,8 +341,12 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="telefoneCoordenacao"
             value={form.telefoneCoordenacao}
             onChange={handleChange}
-            required
           />
+          {errors.telefoneCoordenacao && (
+            <small className={styles.errorText}>
+              {errors.telefoneCoordenacao}
+            </small>
+          )}
         </div>
       </div>
 
@@ -253,8 +358,12 @@ function TermoForm({ onSuccess, termoEdit, setTermoEdit, onCancel }) {
             name="emailCoordenacao"
             value={form.emailCoordenacao}
             onChange={handleChange}
-            required
           />
+          {errors.emailCoordenacao && (
+            <small className={styles.errorText}>
+              {errors.emailCoordenacao}
+            </small>
+          )}
         </div>
       </div>
 

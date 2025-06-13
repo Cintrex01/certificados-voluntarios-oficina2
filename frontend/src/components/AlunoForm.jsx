@@ -18,11 +18,13 @@ function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
     email: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (alunoEdit) {
       setForm({
         ...alunoEdit,
-        dataDeNascimento: alunoEdit.dataDeNascimento.slice(0, 10), // formato YYYY-MM-DD para input date
+        dataDeNascimento: alunoEdit.dataDeNascimento.slice(0, 10),
       });
     }
   }, [alunoEdit]);
@@ -38,24 +40,59 @@ function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
     setForm({ ...form, [name]: val });
   };
 
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const isValidCPF = (cpf) => {
+    cpf = cpf.replace(/[^\d]+/g, "");
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+    let sum = 0;
+    for (let i = 0; i < 9; i++) sum += parseInt(cpf[i]) * (10 - i);
+    let rest = (sum * 10) % 11;
+    if (rest === 10 || rest === 11) rest = 0;
+    if (rest !== parseInt(cpf[9])) return false;
+
+    sum = 0;
+    for (let i = 0; i < 10; i++) sum += parseInt(cpf[i]) * (11 - i);
+    rest = (sum * 10) % 11;
+    if (rest === 10 || rest === 11) rest = 0;
+    return rest === parseInt(cpf[10]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const newErrors = {};
+
+    Object.entries(form).forEach(([key, value]) => {
+      if (value === "" || value === null || value === undefined) {
+        newErrors[key] = "Campo obrigatório.";
+      }
+    });
+
+    if (form.email && !isValidEmail(form.email)) {
+      newErrors.email = "E-mail inválido.";
+    }
+
+    if (form.cpf && !isValidCPF(form.cpf)) {
+      newErrors.cpf = "CPF inválido.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
 
     const dataDeNascimentoISO = new Date(form.dataDeNascimento).toISOString();
 
     const alunoData = {
-      nome: form.nome,
-      cpf: form.cpf,
+      ...form,
       dataDeNascimento: dataDeNascimentoISO,
-      estudanteDaUtfpr: form.estudanteDaUtfpr,
-      curso: form.curso,
-      periodo: form.periodo,
-      ra: form.ra,
-      endereco: form.endereco,
-      cidade: form.cidade,
-      estado: form.estado,
-      telefone: form.telefone,
-      email: form.email,
     };
 
     try {
@@ -92,16 +129,17 @@ function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
       <div className={styles.row}>
         <div className={styles.inputGroup}>
           <label>Nome</label>
-          <input
-            name="nome"
-            value={form.nome}
-            onChange={handleChange}
-            required
-          />
+          <input name="nome" value={form.nome} onChange={handleChange} />
+          {errors.nome && (
+            <small className={styles.errorText}>{errors.nome}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>CPF</label>
-          <input name="cpf" value={form.cpf} onChange={handleChange} required />
+          <input name="cpf" value={form.cpf} onChange={handleChange} />
+          {errors.cpf && (
+            <small className={styles.errorText}>{errors.cpf}</small>
+          )}
         </div>
       </div>
 
@@ -113,8 +151,12 @@ function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
             type="date"
             value={form.dataDeNascimento}
             onChange={handleChange}
-            required
           />
+          {errors.dataDeNascimento && (
+            <small className={styles.errorText}>
+              {errors.dataDeNascimento}
+            </small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Estudante da UTFPR?</label>
@@ -134,97 +176,87 @@ function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
       <div className={styles.row}>
         <div className={styles.inputGroup}>
           <label>Curso</label>
-          <input
-            name="curso"
-            value={form.curso}
-            onChange={handleChange}
-            required
-          />
+          <input name="curso" value={form.curso} onChange={handleChange} />
+          {errors.curso && (
+            <small className={styles.errorText}>{errors.curso}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Período</label>
-          <select
-            name="periodo"
-            value={form.periodo}
-            onChange={handleChange}
-            required
-          >
+          <select name="periodo" value={form.periodo} onChange={handleChange}>
             <option value="">Selecione o período</option>
-            <option value="1">1º período</option>
-            <option value="2">2º período</option>
-            <option value="3">3º período</option>
-            <option value="4">4º período</option>
-            <option value="5">5º período</option>
-            <option value="6">6º período</option>
-            <option value="7">7º período</option>
-            <option value="8">8º período</option>
-            <option value="9">9º período</option>
-            <option value="10">10º período</option>
+            {[...Array(10)].map((_, i) => (
+              <option key={i + 1} value={i + 1}>{`${i + 1}º período`}</option>
+            ))}
           </select>
+          {errors.periodo && (
+            <small className={styles.errorText}>{errors.periodo}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>RA</label>
-          <input name="ra" value={form.ra} onChange={handleChange} required />
+          <input name="ra" value={form.ra} onChange={handleChange} />
+          {errors.ra && <small className={styles.errorText}>{errors.ra}</small>}
         </div>
       </div>
 
       <div className={styles.inputGroup}>
         <label>Endereço</label>
-        <input
-          name="endereco"
-          value={form.endereco}
-          onChange={handleChange}
-          required
-        />
+        <input name="endereco" value={form.endereco} onChange={handleChange} />
+        {errors.endereco && (
+          <small className={styles.errorText}>{errors.endereco}</small>
+        )}
       </div>
 
       <div className={styles.row}>
         <div className={styles.inputGroup}>
           <label>Cidade</label>
-          <input
-            name="cidade"
-            value={form.cidade}
-            onChange={handleChange}
-            required
-          />
+          <input name="cidade" value={form.cidade} onChange={handleChange} />
+          {errors.cidade && (
+            <small className={styles.errorText}>{errors.cidade}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Estado</label>
-          <select
-            name="estado"
-            value={form.estado}
-            onChange={handleChange}
-            required
-          >
+          <select name="estado" value={form.estado} onChange={handleChange}>
             <option value="">Selecione o estado</option>
-            <option value="AC">Acre</option>
-            <option value="AL">Alagoas</option>
-            <option value="AP">Amapá</option>
-            <option value="AM">Amazonas</option>
-            <option value="BA">Bahia</option>
-            <option value="CE">Ceará</option>
-            <option value="DF">Distrito Federal</option>
-            <option value="ES">Espírito Santo</option>
-            <option value="GO">Goiás</option>
-            <option value="MA">Maranhão</option>
-            <option value="MT">Mato Grosso</option>
-            <option value="MS">Mato Grosso do Sul</option>
-            <option value="MG">Minas Gerais</option>
-            <option value="PA">Pará</option>
-            <option value="PB">Paraíba</option>
-            <option value="PR">Paraná</option>
-            <option value="PE">Pernambuco</option>
-            <option value="PI">Piauí</option>
-            <option value="RJ">Rio de Janeiro</option>
-            <option value="RN">Rio Grande do Norte</option>
-            <option value="RS">Rio Grande do Sul</option>
-            <option value="RO">Rondônia</option>
-            <option value="RR">Roraima</option>
-            <option value="SC">Santa Catarina</option>
-            <option value="SP">São Paulo</option>
-            <option value="SE">Sergipe</option>
-            <option value="TO">Tocantins</option>
+            {[
+              "AC",
+              "AL",
+              "AP",
+              "AM",
+              "BA",
+              "CE",
+              "DF",
+              "ES",
+              "GO",
+              "MA",
+              "MT",
+              "MS",
+              "MG",
+              "PA",
+              "PB",
+              "PR",
+              "PE",
+              "PI",
+              "RJ",
+              "RN",
+              "RS",
+              "RO",
+              "RR",
+              "SC",
+              "SP",
+              "SE",
+              "TO",
+            ].map((uf) => (
+              <option key={uf} value={uf}>
+                {uf}
+              </option>
+            ))}
           </select>
+          {errors.estado && (
+            <small className={styles.errorText}>{errors.estado}</small>
+          )}
         </div>
       </div>
 
@@ -235,17 +267,17 @@ function AlunoForm({ onSuccess, alunoEdit, setAlunoEdit, onCancel }) {
             name="telefone"
             value={form.telefone}
             onChange={handleChange}
-            required
           />
+          {errors.telefone && (
+            <small className={styles.errorText}>{errors.telefone}</small>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Email</label>
-          <input
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
+          <input name="email" value={form.email} onChange={handleChange} />
+          {errors.email && (
+            <small className={styles.errorText}>{errors.email}</small>
+          )}
         </div>
       </div>
 

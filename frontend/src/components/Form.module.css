@@ -121,3 +121,9 @@
 .buttonGroup button[type="button"]:hover {
   background-color: #575f66;
 }
+
+.errorText {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
